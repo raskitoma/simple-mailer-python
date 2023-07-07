@@ -56,10 +56,10 @@ def contact():
         server = smtplib.SMTP(sender_host, int(sender_port))
         server.sendmail(sender_email, receiver_email, msg.as_string())
         server.quit()
-        return jsonify({'status': 'sent', 'message': 'success_msg'}), 200
+        return jsonify({'status': 'sent', 'message': 'Success'}), 200
     except Exception as e:
         print(e)
-        return jsonify({'status': 'error', 'message': str(e)}), 500
+        return 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=3001, host='0.0.0.0')
