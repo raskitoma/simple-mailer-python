@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 import smtplib
+import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
+os.environ['PYTHONUNBUFFERED'] = '1'
 
 @app.route('/contact', methods=['POST'])
 def contact():
