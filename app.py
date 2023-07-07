@@ -9,12 +9,12 @@ os.environ['PYTHONUNBUFFERED'] = '1'
 
 @app.route('/contact', methods=['POST'])
 def contact():
-    
-    name = request.form['name']
-    email = request.form['email']
-    subject = request.form['subject']
-    message = request.form['message']    
 
+    print(request.get_data())
+    name = request.form.get('name') or request.get_data() or request.get_data(as_text=True) or request.json
+    email = request.form.get('mail') or request.get_data() or request.get_data(as_text=True) or request.json
+    message = request.form.get('message') or request.get_data() or request.get_data(as_text=True) or request.json
+    subject = request.form.get('subject') or request.get_data() or request.get_data(as_text=True) or request.json
 
     with open('smtp_config.txt', 'r') as f:
         smtp_config = f.read().splitlines()
