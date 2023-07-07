@@ -7,18 +7,11 @@ app = Flask(__name__)
 
 @app.route('/contact', methods=['POST'])
 def contact():
-    try:
-        name = request.form['name']
-        email = request.form['mail']
-        message = request.form['message']
-        subject = request.form['subject']
-    except Exception as e:
-        print(e)
-        data = request.get_json()
-        name = data.get('name')
-        email = data.get('mail')
-        message = data.get('message')
-        subject = data.get('subject')
+
+    name = request.form.get('name') or request.get_data() or request.get_data(as_text=True) or request.json
+    email = request.form.get('mail') or request.get_data() or request.get_data(as_text=True) or request.json
+    message = request.form.get('message') or request.get_data() or request.get_data(as_text=True) or request.json
+    subject = request.form.get('subject') or request.get_data() or request.get_data(as_text=True) or request.json
 
     with open('smtp_config.txt', 'r') as f:
         smtp_config = f.read().splitlines()
