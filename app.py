@@ -10,6 +10,7 @@ os.environ['PYTHONUNBUFFERED'] = '1'
 @app.route('/contact', methods=['POST'])
 def contact():
     json_data = request.get_json()
+    print(json_data)
     name = json_data['name']
     email = json_data['mail']
     message = json_data['message']
