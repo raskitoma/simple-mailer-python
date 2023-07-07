@@ -23,6 +23,8 @@ def contact():
     sender_name = smtp_config[3]
     receiver_email = email
 
+    print(f'Name: {name}\nEmail: {email}\nSubject: {subject}\nMessage: {message}')
+
     msg = MIMEMultipart('alternative')
     msg['From'] = sender_email
     msg['To'] = receiver_email
