@@ -21,7 +21,7 @@ def contact():
     sender_host = smtp_config[1]
     sender_port = smtp_config[2]
     sender_name = smtp_config[3]
-    receiver_email = email
+    receiver_email = smtp_config[4]
 
     msg = MIMEMultipart('alternative')
     msg['From'] = sender_email
