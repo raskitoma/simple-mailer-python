@@ -10,6 +10,12 @@ os.environ['PYTHONUNBUFFERED'] = '1'
 @app.route('/contact', methods=['POST'])
 def contact():
 
+    print(request.get_data().decode())
+    print(request.get_data(as_text=True))
+    
+    print('-------------------------------------')
+    print(request.form.get('name'))
+    
     name = request.form.get('name') or request.get_data().decode() or request.get_data(as_text=True) or request.json
     email = request.form.get('mail') or request.get_data().decode() or request.get_data(as_text=True) or request.json
     message = request.form.get('message') or request.get_data().decode() or request.get_data(as_text=True) or request.json
