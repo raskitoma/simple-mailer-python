@@ -12,7 +12,7 @@ def contact():
     json_data = request.get_json()
     print(json_data)
     name = json_data['name']
-    email = json_data['mail']
+    email = json_data['email']
     message = json_data['message']
     subject = json_data['subject']
     
