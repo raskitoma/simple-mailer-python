@@ -7,7 +7,9 @@ app = Flask(__name__)
 
 @app.route('/contact', methods=['POST'])
 def contact():
+    print('contact')
     print(request)
+    print(request.form)
     name = request.form['name']
     email = request.form['mail']
     message = request.form['message']
