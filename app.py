@@ -57,7 +57,7 @@ def contact():
         return jsonify({'status': 'sent', 'message': 'Success'}), 200
     except Exception as e:
         print(e)
-        return 500
+        return jsonify({'status': 'error', 'message': f'Error: {e}'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, port=3001, host='0.0.0.0')
