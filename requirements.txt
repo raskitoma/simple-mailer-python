@@ -1,0 +1,3 @@
+Flask==2.0.1
+smtplib==0.1.0
+email==0.1.0

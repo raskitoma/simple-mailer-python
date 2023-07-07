@@ -1,0 +1,4 @@
+sender@mail.com
+smtp.mail.com
+587
+My Company - Just for Naming.

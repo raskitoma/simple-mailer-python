@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  rskpymailer:
+    build: .
+    container_name: rskpymailer
+    hostname: rskpymailer
+    image: rskpymailer:v1
+    networks:
+      master_network:
+    ports:
+      - 3001:3001 # This port should match the one in the environment variable APP_PORT
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "10m"
+
+networks:
+  master_network:
+    external: true
