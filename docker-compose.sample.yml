@@ -8,7 +8,7 @@ services:
     networks:
       master_network:
     ports:
-      - 3001:3001 # This port should match the one in the environment variable APP_PORT
+      - 3001:3001
     restart: always
     logging:
       driver: "json-file"
