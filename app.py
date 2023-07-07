@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import json
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -7,13 +8,18 @@ app = Flask(__name__)
 
 @app.route('/contact', methods=['POST'])
 def contact():
-    print('contact')
-    print(request)
-    print(request.form)
-    name = request.form['name']
-    email = request.form['mail']
-    message = request.form['message']
-    subject = request.form['subject']
+    try:
+        name = request.form['name']
+        email = request.form['mail']
+        message = request.form['message']
+        subject = request.form['subject']
+    except Exception as e:
+        print(e)
+        data = json.loads(request.body)
+        name = data.get('name')
+        email = data.get('mail')
+        message = data.get('message')
+        subject = data.get('subject')
 
     with open('smtp_config.txt', 'r') as f:
         smtp_config = f.read().splitlines()
