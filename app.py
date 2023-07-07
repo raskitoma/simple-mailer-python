@@ -11,10 +11,11 @@ os.environ['PYTHONUNBUFFERED'] = '1'
 def contact():
 
     print(request.get_data().decode())
-    print(request.get_data(as_text=True))
-    
-    print('-------------------------------------')
+    print('-------------------------------------\n')
+    print(request.get_data(as_text=True))   
+    print('-------------------------------------\n')
     print(request.form.get('name'))
+    print('-------------------------------------\n')
     
     name = request.form.get('name') or request.get_data().decode() or request.get_data(as_text=True) or request.json
     email = request.form.get('mail') or request.get_data().decode() or request.get_data(as_text=True) or request.json
@@ -28,8 +29,6 @@ def contact():
     sender_port = smtp_config[2]
     sender_name = smtp_config[3]
     receiver_email = email
-
-    print(f'Name: {name}\nEmail: {email}\nSubject: {subject}\nMessage: {message}')
 
     msg = MIMEMultipart('alternative')
     msg['From'] = sender_email
