@@ -42,6 +42,7 @@ def contact():
 
     # first, check recaptcha
     captcha_valid = verify_captcha(recaptchaResponse, recaptcha_siteKey)
+    print(f'captcha_valid: {captcha_valid}, recaptchaResponse: {recaptchaResponse}, recaptcha_siteKey: {recaptcha_siteKey}')
     if not captcha_valid:
         return jsonify({'status': 'error', 'message': 'Captcha failed'}), 500
 
