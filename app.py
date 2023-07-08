@@ -13,6 +13,7 @@ def verify_captcha(token, secret_key):
     data = {'secret': secret_key, 'response': token}
     response = requests.post(url, data=data)
     result = response.json()
+    print(result)
     if result['success']:
         # Captcha was successful
         return True
@@ -24,13 +25,12 @@ def verify_captcha(token, secret_key):
 @app.route('/contact', methods=['POST'])
 def contact():
     json_data = request.get_json()
-    print(json_data)
     name = json_data['name']
     email = json_data['email']
     message = json_data['message']
     subject = json_data['subject']
-    recaptchaResponse = json_data['g-recaptcha-response']
-           
+    gctoken = json_data['g-recaptcha-response']
+              
     # Load config
     with open('smtp_config.txt', 'r') as f:
         smtp_config = f.read().splitlines()
@@ -39,11 +39,11 @@ def contact():
     sender_port = smtp_config[2]
     sender_name = smtp_config[3]
     receiver_email = smtp_config[4]
-    recaptcha_siteKey = smtp_config[5]
+    recaptcha_key = smtp_config[5]
 
     # first, check recaptcha
-    captcha_valid = verify_captcha(recaptchaResponse, recaptcha_siteKey)
-    print(f'captcha_valid: {captcha_valid}, recaptchaResponse: {recaptchaResponse}, recaptcha_siteKey: {recaptcha_siteKey}')
+    captcha_valid = verify_captcha(gctoken, recaptcha_key)
+    print(f'captcha_valid: {captcha_valid}, Captcha: {gctoken}, Key: {recaptcha_key}')
     if not captcha_valid:
         return jsonify({'status': 'error', 'message': 'Captcha failed'}), 500
 
