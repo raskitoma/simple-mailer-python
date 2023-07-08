@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import requests
 import smtplib
 import os
 from email.mime.text import MIMEText
@@ -7,6 +8,19 @@ from email.mime.multipart import MIMEMultipart
 app = Flask(__name__)
 os.environ['PYTHONUNBUFFERED'] = '1'
 
+def verify_captcha(token, secret_key):
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    data = {'secret': secret_key, 'response': token}
+    response = requests.post(url, data=data)
+    result = response.json()
+    if result['success']:
+        # Captcha was successful
+        return True
+    else:
+        # Captcha was not successful
+        return False
+
+
 @app.route('/contact', methods=['POST'])
 def contact():
     json_data = request.get_json()
@@ -14,7 +28,9 @@ def contact():
     email = json_data['email']
     message = json_data['message']
     subject = json_data['subject']
-        
+    recaptchaResponse = json_data['g-recaptcha-response']
+           
+    # Load config
     with open('smtp_config.txt', 'r') as f:
         smtp_config = f.read().splitlines()
     sender_email = smtp_config[0]
@@ -22,6 +38,12 @@ def contact():
     sender_port = smtp_config[2]
     sender_name = smtp_config[3]
     receiver_email = smtp_config[4]
+    recaptcha_siteKey = smtp_config[5]
+
+    # first, check recaptcha
+    captcha_valid = verify_captcha(recaptchaResponse, recaptcha_siteKey)
+    if not captcha_valid:
+        return jsonify({'status': 'error', 'message': 'Captcha failed'}), 500
 
     msg = MIMEMultipart('alternative')
     msg['From'] = sender_email

@@ -1,6 +1,18 @@
 # RSKpyMailer: Simple-Py-Mailer
 
-This is an endpoint that ables you to send email through this.
+This app enables you to send email from a form.
+
+This project assumes you have a SMTP relay server with no authentication required, so that means your relay must accept this app ip address(host) to be added as a valid sender.
+
+This also assumes you have a valid captcha v2 key from google, paired with the sender.
+
+Access to this app via POST request with json object as body, with the following variables:
+
+- name
+- email
+- message
+- subject
+- g-recaptcha-response
 
 ## Usage
 

@@ -3,3 +3,4 @@ smtp.mail.com
 587
 My Company - Just for Naming.
 company@mail.com
+My_reCaptcha_siteKey
