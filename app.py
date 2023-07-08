@@ -8,24 +8,22 @@ from email.mime.multipart import MIMEMultipart
 app = Flask(__name__)
 os.environ['PYTHONUNBUFFERED'] = '1'
 
-def verify_captcha(token, secret_key):
+def verify_captcha(token, recaptcha_secret_key):
     url = 'https://www.google.com/recaptcha/api/siteverify'
-    data = {'secret': secret_key, 'response': token}
-    response = requests.post(url, data=data)
+    payload = {
+        'secret': recaptcha_secret_key,
+        'response': token,
+        'remoteip': request.remote_addr,
+    }
+    response = requests.post(url, data=payload)
     result = response.json()
     print(result)
-    if result['success']:
-        # Captcha was successful
-        return True
-    else:
-        # Captcha was not successful
-        return False
+    return result.get('success', False)
 
 
 @app.route('/contact', methods=['POST'])
 def contact():
     json_data = request.get_json()
-    print(json_data)
     name = json_data['name']
     email = json_data['email']
     message = json_data['message']
@@ -44,7 +42,6 @@ def contact():
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
-    print(f'captcha_valid: {captcha_valid}, Captcha: {gctoken}, Key: {recaptcha_key}')
     if not captcha_valid:
         return jsonify({'status': 'error', 'message': 'Captcha failed'}), 500
 
