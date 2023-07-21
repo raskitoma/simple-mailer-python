@@ -24,7 +24,10 @@ def verify_captcha(token, recaptcha_secret_key):
 @app.route('/contact', methods=['POST'])
 def contact():
     json_data = request.get_json()
-    reason = json_data['reason']
+    try:
+        reason = int(json_data['reason'])
+    except:
+        reason = 0
     name = json_data['name']
     email = json_data['email']
     message = json_data['message']
