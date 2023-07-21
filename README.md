@@ -8,6 +8,7 @@ This also assumes you have a valid captcha v2 key from google, paired with the s
 
 Access to this app via POST request with json object as body, with the following variables:
 
+- reason. If this is not present, it will assume you have only one route for mail.
 - name
 - email
 - message
@@ -17,6 +18,6 @@ Access to this app via POST request with json object as body, with the following
 ## Usage
 
 1. Clone this repository.
-2. Modify the `smtp_config.txt` file with your SMTP configuration and details.
+2. Modify the `smtp_config.txt` file with your SMTP configuration and details. Note that the 5th line defines all the routes for mail. If you want to add more routes, add them in the same format as the example.
 3. Build and run the Docker container using the following command: ```docker-compose up --build```
 4. The contact API will be available at `http://localhost:3001/contact`.  This is accesible via POST request, check variables that must be send as urlencoded-form-data.

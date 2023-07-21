@@ -2,5 +2,5 @@ sender@mail.com
 smtp.mail.com
 587
 My Company - Just for Naming.
-company@mail.com
+company@mail.com,company2@mail.com|route2@mail.com|route3@mail.com,route3.1@mail.com
 My_reCaptcha_siteKey
