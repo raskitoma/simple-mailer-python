@@ -38,7 +38,10 @@ def contact():
     sender_host = smtp_config[1]
     sender_port = smtp_config[2]
     sender_name = smtp_config[3]
-    receiver_email_list = smtp_config[4].split('|')
+    try:
+        receiver_email_list = smtp_config[4].split('|')
+    except:
+        receiver_email_list[0] = smtp_config[4]
     receiver_email = receiver_email_list[reason]
     recaptcha_key = smtp_config[5]
 
