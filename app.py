@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
+from flask import CORS
 import requests
 import smtplib
 import os
@@ -7,6 +8,12 @@ from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 os.environ['PYTHONUNBUFFERED'] = '1'
+
+CORS(app, origins=[
+      "https://test.easyfoods.com",
+      "https://www.easyfoods.com",
+      "https://easyfoods.com"
+    ])
 
 def verify_captcha(token, recaptcha_secret_key):
     url = 'https://www.google.com/recaptcha/api/siteverify'
