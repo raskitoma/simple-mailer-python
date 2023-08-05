@@ -9,11 +9,13 @@ from email.mime.multipart import MIMEMultipart
 app = Flask(__name__)
 os.environ['PYTHONUNBUFFERED'] = '1'
 
-CORS(app, origins=[
-      "https://test.easyfoods.com",
-      "https://www.easyfoods.com",
-      "https://easyfoods.com"
-    ])
+# CORS(app, origins=[
+#       "https://test.easyfoods.com",
+#       "https://www.easyfoods.com",
+#       "https://easyfoods.com"
+#     ])
+
+CORS(app)
 
 def verify_captcha(token, recaptcha_secret_key):
     url = 'https://www.google.com/recaptcha/api/siteverify'
