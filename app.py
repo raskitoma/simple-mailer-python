@@ -9,6 +9,17 @@ from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+
+console_handler.setFormatter(formatter)
+
+app_logger = app.logger
+app_logger.addHandler(console_handler)
+app_logger.setLevel(logging.INFO)
+
 # ensuring that the logs are being delivered to docker logs
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logging.info('Starting app...')
@@ -34,11 +45,12 @@ def verify_captcha(token, recaptcha_secret_key):
 
 @app.route('/contact', methods=['POST'])
 def contact():
+    app_logger.info('Contact form submitted')
     json_data = request.get_json()
     try:
         reason = int(json_data['reason'])
     except Exception as e:
-        logging.warning(e)
+        app_logger.warning(e)
         reason = 0
     name = json_data['name']
     email = json_data['email']
@@ -56,12 +68,12 @@ def contact():
     try:
         receiver_email_list = smtp_config[4].split('|')
     except Exception as e:
-        logging.warning(e)
+        app_logger.warning(e)
         receiver_email_list[0] = smtp_config[4]
     receiver_email = receiver_email_list[reason]
     recaptcha_key = smtp_config[5]
 
-    logging.warning(f'To: {receiver_email}')
+    app_logger.warning(f'To: {receiver_email}')
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
@@ -103,7 +115,7 @@ def contact():
         server.quit()
         return jsonify({'status': 'sent', 'message': 'Success'}), 200
     except Exception as e:
-        logging.warning(e)
+        app_logger.warning(e)
         return jsonify({'status': 'error', 'message': f'Error: {e}'}), 500
 
 if __name__ == '__main__':
