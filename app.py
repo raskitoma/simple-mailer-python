@@ -10,6 +10,7 @@ from email.mime.multipart import MIMEMultipart
 app = Flask(__name__)
 
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
+logging.info('Starting app...')
 
 CORS(app, origins=[
       "https://test.easyfoods.com",
