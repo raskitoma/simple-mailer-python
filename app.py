@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, json
 from flask_cors import CORS
+import logging
 import requests
 import smtplib
 import os
@@ -24,7 +25,7 @@ def verify_captcha(token, recaptcha_secret_key):
     }
     response = requests.post(url, data=payload)
     result = response.json()
-    print(result)
+    logging.info(result)
     return result.get('success', False)
 
 
@@ -34,7 +35,7 @@ def contact():
     try:
         reason = int(json_data['reason'])
     except Exception as e:
-        print(e)
+        logging.warning(e)
         reason = 0
     name = json_data['name']
     email = json_data['email']
@@ -52,12 +53,12 @@ def contact():
     try:
         receiver_email_list = smtp_config[4].split('|')
     except Exception as e:
-        print(e)
+        logging.warning(e)
         receiver_email_list[0] = smtp_config[4]
     receiver_email = receiver_email_list[reason]
     recaptcha_key = smtp_config[5]
 
-    print(f'To: {receiver_email}')
+    logging.warning(f'To: {receiver_email}')
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
@@ -99,7 +100,7 @@ def contact():
         server.quit()
         return jsonify({'status': 'sent', 'message': 'Success'}), 200
     except Exception as e:
-        print(e)
+        logging.warning(e)
         return jsonify({'status': 'error', 'message': f'Error: {e}'}), 500
 
 if __name__ == '__main__':
