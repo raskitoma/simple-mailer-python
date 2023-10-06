@@ -3,25 +3,19 @@ from flask_cors import CORS
 import logging
 import requests
 import smtplib
-import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 
+# Setting up logging
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-
+console_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-
 console_handler.setFormatter(formatter)
-
 app_logger = app.logger
+app_logger.setLevel(logging.DEBUG)
 app_logger.addHandler(console_handler)
-app_logger.setLevel(logging.INFO)
-
-# ensuring that the logs are being delivered to docker logs
-app_loger.info('Starting app...')
 
 CORS(app, origins=[
       "https://test.easyfoods.com",
@@ -73,6 +67,7 @@ def contact():
     recaptcha_key = smtp_config[5]
 
     app_logger.info(f'To: {receiver_email}')
+    app.logger.info(f'From: {sender_email}')
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
