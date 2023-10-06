@@ -33,7 +33,8 @@ def contact():
     json_data = request.get_json()
     try:
         reason = int(json_data['reason'])
-    except:
+    except Exception as e:
+        print(e)
         reason = 0
     name = json_data['name']
     email = json_data['email']
@@ -50,10 +51,13 @@ def contact():
     sender_name = smtp_config[3]
     try:
         receiver_email_list = smtp_config[4].split('|')
-    except:
+    except Exception as e:
+        print(e)
         receiver_email_list[0] = smtp_config[4]
     receiver_email = receiver_email_list[reason]
     recaptcha_key = smtp_config[5]
+
+    print(f'To: {receiver_email}')
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
