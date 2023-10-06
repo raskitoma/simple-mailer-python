@@ -59,7 +59,7 @@ def contact():
     recaptcha_key = smtp_config[5]
 
     logging.warning(f'To: {receiver_email}')
-    print(f'To: {receiver_email}')
+    print(f'To: {receiver_email}', flush=True)
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
