@@ -38,6 +38,7 @@ def verify_captcha(token, recaptcha_secret_key):
 
 @app.route('/contact', methods=['POST'])
 def contact():
+    app.logger.info('Headers: %s', request.headers)
     app_logger.info('Contact form submitted')
     json_data = request.get_json()
     try:
