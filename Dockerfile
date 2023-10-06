@@ -1,4 +1,5 @@
 FROM python:3.9-slim-buster
+ENV FLASK_APP=wsgi.py
 
 WORKDIR /app
 
@@ -10,4 +11,5 @@ COPY . .
 
 EXPOSE 3001
 
-CMD [ "python", "./app.py" ]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=3001"]	
+
