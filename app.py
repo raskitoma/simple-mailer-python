@@ -21,8 +21,7 @@ app_logger.addHandler(console_handler)
 app_logger.setLevel(logging.INFO)
 
 # ensuring that the logs are being delivered to docker logs
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
-logging.info('Starting app...')
+app_loger.info('Starting app...')
 
 CORS(app, origins=[
       "https://test.easyfoods.com",
@@ -73,7 +72,7 @@ def contact():
     receiver_email = receiver_email_list[reason]
     recaptcha_key = smtp_config[5]
 
-    app_logger.warning(f'To: {receiver_email}')
+    app_logger.info(f'To: {receiver_email}')
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
