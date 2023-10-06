@@ -8,7 +8,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
-os.environ['PYTHONUNBUFFERED'] = '0'
+
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 CORS(app, origins=[
       "https://test.easyfoods.com",
@@ -59,7 +60,6 @@ def contact():
     recaptcha_key = smtp_config[5]
 
     logging.warning(f'To: {receiver_email}')
-    print(f'To: {receiver_email}', flush=True)
 
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)

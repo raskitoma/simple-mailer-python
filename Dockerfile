@@ -1,5 +1,4 @@
 FROM python:3.9-slim-buster
-ENV PYTHONUNBUFFERED=0
 
 WORKDIR /app
 
@@ -11,4 +10,4 @@ COPY . .
 
 EXPOSE 3001
 
-CMD [ "python", "-u", "./app.py" ]
+CMD [ "python", "./app.py" ]

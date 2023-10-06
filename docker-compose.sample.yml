@@ -9,8 +9,6 @@ services:
       master_network:
     ports:
       - 3001:3001
-    environment:
-      - PYTHONUNBUFFERED=0
     restart: always
     logging:
       driver: "json-file"
