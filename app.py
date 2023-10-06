@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
-os.environ['PYTHONUNBUFFERED'] = '1'
+os.environ['PYTHONUNBUFFERED'] = '0'
 
 CORS(app, origins=[
       "https://test.easyfoods.com",

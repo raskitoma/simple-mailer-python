@@ -10,7 +10,7 @@ services:
     ports:
       - 3001:3001
     environment:
-      - PYTHONUNBUFFERED=1
+      - PYTHONUNBUFFERED=0
     restart: always
     logging:
       driver: "json-file"
