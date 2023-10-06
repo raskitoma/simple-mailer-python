@@ -9,7 +9,8 @@ from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 
-logging.basicConfig(filename='app.log', level=logging.DEBUG)
+# ensuring that the logs are being delivered to docker logs
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logging.info('Starting app...')
 
 CORS(app, origins=[
