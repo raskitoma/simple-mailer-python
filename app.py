@@ -57,10 +57,12 @@ def contact():
     receiver_email = receiver_email_list[reason]
     recaptcha_key = smtp_config[5]
 
+    print(f'To: {receiver_email}')
+
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
     if not captcha_valid:
-        return jsonify({'status': 'error', 'message': f'Captcha failed to {receiver_email}'}), 500
+        return jsonify({'status': 'error', 'message': 'Captcha failed'}), 500
 
     msg = MIMEMultipart('alternative')
     msg['From'] = sender_email
