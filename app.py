@@ -44,7 +44,11 @@ def contact():
     except Exception as e:
         app_logger.warning(e)
         reason = 0
-    file = request.files['file']
+    try:
+        file = request.files['file']
+    except Exception as e:
+        app_logger.warning(e)
+        file = None
     name = json_data['name']
     email = json_data['email']
     message = json_data['message']
@@ -63,7 +67,11 @@ def contact():
     except Exception as e:
         app_logger.warning(e)
         receiver_email_list[0] = smtp_config[4]
-    receiver_email = receiver_email_list[reason]
+    try:
+        receiver_email = receiver_email_list[reason]
+    except Exception as e:
+        app_logger.warning(e)
+        receiver_email = receiver_email_list[0]
     recaptcha_key = smtp_config[5]
 
     app_logger.info(f'To: {receiver_email}')
