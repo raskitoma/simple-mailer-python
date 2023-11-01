@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, json
+from flask import Flask, request, jsonify, json, make_response
 from flask_cors import CORS
 import logging
 import requests
@@ -38,14 +38,13 @@ def verify_captcha(token, recaptcha_secret_key):
 
 @app.route('/contact', methods=['POST'])
 def contact():
-    app.logger.info('Headers: %s', request.headers)
-    app_logger.info('Contact form submitted')
     json_data = request.get_json()
     try:
         reason = int(json_data['reason'])
     except Exception as e:
         app_logger.warning(e)
         reason = 0
+    file = request.files['file']
     name = json_data['name']
     email = json_data['email']
     message = json_data['message']
@@ -73,7 +72,7 @@ def contact():
     # first, check recaptcha
     captcha_valid = verify_captcha(gctoken, recaptcha_key)
     if not captcha_valid:
-        return jsonify({'status': 'error', 'message': 'Captcha failed'}), 500
+        return make_response(jsonify({'data': 'Captcha failed'}), 404)
 
     msg = MIMEMultipart('alternative')
     msg['From'] = sender_email
@@ -99,19 +98,25 @@ def contact():
     '''
       
     part1 = MIMEText(text_body, 'plain')
-    part2 = MIMEText(html_body, 'html')
+    part2 = MIMEText(html_body, 'html')   
 
     msg.attach(part1)
     msg.attach(part2)
+    
+    if file:
+        file_name = file.filename
+        part3 = MIMEText(file.read(), 'base64', 'utf-8')
+        part3.add_header('Content-Disposition', 'attachment', filename=file_name)
+        msg.attach(part3)
 
     try:
         server = smtplib.SMTP(sender_host, int(sender_port))
         server.sendmail(sender_email, receiver_email, msg.as_string())
         server.quit()
-        return jsonify({'status': 'sent', 'message': 'Success'}), 200
+        return make_response(jsonify({'data': 'Success'}), 200)
     except Exception as e:
         app_logger.warning(e)
-        return jsonify({'status': 'error', 'message': f'Error: {e}'}), 500
+        return make_response(jsonify({'data': f'Error: {e}'}), 500)
 
 if __name__ == '__main__':
     app.run(debug=True, port=3001, host='0.0.0.0')
