@@ -116,7 +116,7 @@ def contact():
         return make_response(jsonify({'data': 'Success'}), 200)
     except Exception as e:
         app_logger.warning(e)
-        return make_response(jsonify({'data': f'Error: {e}', 'data': f'Error: {e}'}), 500)
+        return make_response(jsonify({'error': f'Error: {e}', 'data': f'Error: {e}'}), 500)
 
 if __name__ == '__main__':
     app.run(debug=True, port=3001, host='0.0.0.0')
